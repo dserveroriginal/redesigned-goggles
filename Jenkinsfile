@@ -83,33 +83,33 @@ pipeline {
 
 def installDependencies() {
     echo "Cloning application repository..."
-    bat "rm -rf python-greetings && git clone ${REPO_APP}"
+    bat "rmdir /s /q python-greetings & git clone %REPO_APP%"
     
     echo "Verifying files in the repository..."
-    bat "ls -la python-greetings"
+    bat "dir python-greetings"
 
     echo "Installing required Python dependencies..."
-    bat "pip3 install -r python-greetings/requirements.txt"
+    bat "pip install -r python-greetings\requirements.txt"
 }
 
 def deploy(envName, port) {
     echo "Deploying application to ${envName} environment on port ${port}..."
     
     echo "Cloning application repository..."
-    bat "rm -rf python-greetings && git clone ${REPO_APP}"
+    bat "rmdir /s /q python-greetings & git clone %REPO_APP%"
 
     echo "Stopping any existing service..."
-    bat "pm2 delete greetings-app-${envName} || true"
+    bat "pm2 delete greetings-app-${envName} || exit 0"
 
     echo "Starting application..."
-    bat "pm2 start python-greetings/app.py --name greetings-app-${envName} -- --port ${port}"
+    bat "pm2 start python-greetings\app.py --name greetings-app-${envName} -- --port ${port}"
 }
 
 def runTests(envName) {
     echo "Running tests on ${envName} environment..."
 
     echo "Cloning test framework repository..."
-    bat "rm -rf course-js-api-framework && git clone ${REPO_TESTS}"
+    bat "rmdir /s /q course-js-api-framework & git clone %REPO_TESTS%"
 
     echo "Installing required Node.js dependencies..."
     bat "cd course-js-api-framework && npm install"
