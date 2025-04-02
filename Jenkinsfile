@@ -89,7 +89,7 @@ def installDependencies() {
     bat "dir python-greetings"
 
     echo "Installing required Python dependencies..."
-    bat "pip install -r python-greetings\requirements.txt"
+    bat "pip install -r python-greetings/requirements.txt"
 }
 
 def deploy(envName, port) {
