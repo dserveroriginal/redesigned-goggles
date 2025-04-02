@@ -4,7 +4,6 @@ pipeline {
     environment {
         REPO_APP = "https://github.com/mtararujs/python-greetings"
         REPO_TESTS = "https://github.com/mtararujs/course-js-api-framework"
-        PM2_PATH = "C:\\Users\\Jenkins\\AppData\\Roaming\\npm\\pm2.cmd"
     }
 
     stages {
@@ -35,7 +34,7 @@ pipeline {
         stage('deploy-to-staging') {
             steps {
                 script {
-                    deploy('staging', 7002)
+                    deploy('stg', 7002)
                 }
             }
         }
@@ -43,7 +42,7 @@ pipeline {
         stage('tests-on-staging') {
             steps {
                 script {
-                    runTests('staging')
+                    runTests('stg')
                 }
             }
         }
@@ -91,9 +90,6 @@ def installDependencies() {
 
     echo "Installing required Python dependencies..."
     bat "pip install -r python-greetings/requirements.txt"
-
-    echo "Installing PM2..."
-    bat "npm install -g pm2"
 }
 
 def deploy(envName, port) {
@@ -103,10 +99,10 @@ def deploy(envName, port) {
     bat "rmdir /s /q python-greetings & git clone %REPO_APP%"
 
     echo "Stopping any existing service..."
-    bat "pm2 delete greetings-app-${envName} || exit 0"
+    bat "node_modules\\.bin\\pm2 delete \"greetings-app-${envName}\" || exit 0"
 
     echo "Starting application..."
-    bat "pm2 start python-greetings/app.py --name greetings-app-${envName} -- --port ${port}"
+    bat "node_modules\\.bin\\pm2 start -n \"greetings-app-${envName}\" python-greetings/app.py -- ${port}"
 }
 
 def runTests(envName) {
