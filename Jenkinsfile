@@ -104,7 +104,7 @@ def deploy(env, port) {
     bat "node_modules\\.bin\\pm2 delete \"greetings-app-${env}\" || exit 0"
 
     echo "Starting application..."
-    bat "node_modules\\.bin\\pm2 start -n \"greetings-app-${env}\" \"python-greetings/app.py --port ${port}\" -- --port ${port}"
+    bat "node_modules\\.bin\\pm2 start -n \"greetings-app-${env}\" python-greetings/app.py -- --port ${port}"
     // bat "timeout 10"
 }
 
