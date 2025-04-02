@@ -94,22 +94,22 @@ def build() {
     bat "npm install pm2"
 }
 
-def deploy(envName, port) {
-    echo "Deploying application to ${envName} environment on port ${port}..."
+def deploy(env, port) {
+    echo "Deploying application to ${env} environment on port ${port}..."
     
     echo "Cloning application repository..."
     bat "rmdir /s /q python-greetings & git clone %REPO_APP%"
 
     echo "Stopping any existing service..."
-    bat "node_modules\\.bin\\pm2 delete \"greetings-app-${envName}\" || exit 0"
+    bat "node_modules\\.bin\\pm2 delete \"greetings-app-${env}\" || exit 0"
 
     echo "Starting application..."
-    bat "node_modules\\.bin\\pm2 start -n \"greetings-app-${envName}\" python-greetings/app.py -- ${port} -- --port ${port}"
+    bat "node_modules\\.bin\\pm2 start -n \"greetings-app-${env}\" \"python-greetings/app.py --port ${port}\" -- --port ${port}"
     // bat "timeout 10"
 }
 
-def test(envName) {
-    echo "Running tests on ${envName} environment..."
+def test(env) {
+    echo "Running tests on ${env} environment..."
 
     bat "node_modules\\.bin\\pm2 list"
 
@@ -120,5 +120,5 @@ def test(envName) {
     bat "cd course-js-api-framework && npm install"
 
     echo "Executing API tests..."
-    bat "cd course-js-api-framework && npm run greetings greetings_${envName}"
+    bat "cd course-js-api-framework && npm run greetings greetings_${env}"
 }
