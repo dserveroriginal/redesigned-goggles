@@ -109,6 +109,8 @@ def deploy(envName, port) {
 def runTests(envName) {
     echo "Running tests on ${envName} environment..."
 
+    bat "node_modules\\.bin\\pm2 list"
+
     echo "Cloning test framework repository..."
     bat "rmdir /s /q course-js-api-framework & git clone %REPO_TESTS%"
 
