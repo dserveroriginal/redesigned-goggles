@@ -102,7 +102,7 @@ def deploy(envName, port) {
     bat "pm2 delete greetings-app-${envName} || exit 0"
 
     echo "Starting application..."
-    bat "pm2 start python-greetings\app.py --name greetings-app-${envName} -- --port ${port}"
+    bat "pm2 start python-greetings/app.py --name greetings-app-${envName} -- --port ${port}"
 }
 
 def runTests(envName) {
