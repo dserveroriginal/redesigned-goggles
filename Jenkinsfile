@@ -10,7 +10,7 @@ pipeline {
         stage('install-pip-deps') {
             steps {
                 script {
-                    installDependencies()
+                    build()
                 }
             }
         }
@@ -26,7 +26,7 @@ pipeline {
         stage('tests-on-dev') {
             steps {
                 script {
-                    runTests('dev')
+                    test('dev')
                 }
             }
         }
@@ -42,7 +42,7 @@ pipeline {
         stage('tests-on-staging') {
             steps {
                 script {
-                    runTests('stg')
+                    test('stg')
                 }
             }
         }
@@ -58,7 +58,7 @@ pipeline {
         stage('tests-on-preprod') {
             steps {
                 script {
-                    runTests('preprod')
+                    test('preprod')
                 }
             }
         }
@@ -74,14 +74,14 @@ pipeline {
         stage('tests-on-prod') {
             steps {
                 script {
-                    runTests('prod')
+                    test('prod')
                 }
             }
         }
     }
 }
 
-def installDependencies() {
+def build() {
     echo "Cloning application repository..."
     bat "rmdir /s /q python-greetings & git clone %REPO_APP%"
     
@@ -91,7 +91,7 @@ def installDependencies() {
     echo "Installing required Python dependencies..."
     bat "pip install -r python-greetings/requirements.txt"
     
-    bat "npm install pm2"
+    npm install pm2
 }
 
 def deploy(envName, port) {
@@ -104,11 +104,11 @@ def deploy(envName, port) {
     bat "node_modules\\.bin\\pm2 delete \"greetings-app-${envName}\" || exit 0"
 
     echo "Starting application..."
-    bat "node_modules\\.bin\\pm2 start -n \"greetings-app-${envName}\" python-greetings/app.py -- ${port} -- --port ${port} --no-daemon"
+    bat "node_modules\\.bin\\pm2 start -n \"greetings-app-${envName}\" python-greetings/app.py -- ${port} -- --port ${port}"
     // bat "timeout 10"
 }
 
-def runTests(envName) {
+def test(envName) {
     echo "Running tests on ${envName} environment..."
 
     bat "node_modules\\.bin\\pm2 list"
