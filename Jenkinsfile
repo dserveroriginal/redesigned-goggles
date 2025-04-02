@@ -90,6 +90,7 @@ def installDependencies() {
 
     echo "Installing required Python dependencies..."
     bat "pip install -r python-greetings/requirements.txt"
+    bat "npm install pm2 --save-dev"
 }
 
 def deploy(envName, port) {
