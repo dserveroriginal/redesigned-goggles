@@ -4,6 +4,7 @@ pipeline {
     environment {
         REPO_APP = "https://github.com/mtararujs/python-greetings"
         REPO_TESTS = "https://github.com/mtararujs/course-js-api-framework"
+        PM2_PATH = "C:\\Users\\Jenkins\\AppData\\Roaming\\npm\\pm2.cmd"
     }
 
     stages {
