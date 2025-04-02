@@ -91,7 +91,7 @@ def build() {
     echo "Installing required Python dependencies..."
     bat "pip install -r python-greetings/requirements.txt"
     
-    npm install pm2
+    bat "npm install pm2"
 }
 
 def deploy(envName, port) {
