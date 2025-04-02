@@ -90,7 +90,7 @@ def installDependencies() {
 
     echo "Installing required Python dependencies..."
     bat "pip install -r python-greetings/requirements.txt"
-    bat "pip freeze --local"
+    
     bat "npm install pm2"
 }
 
@@ -99,7 +99,7 @@ def deploy(envName, port) {
     
     echo "Cloning application repository..."
     bat "rmdir /s /q python-greetings & git clone %REPO_APP%"
-
+    bat "pip freeze --local"
     echo "Stopping any existing service..."
     bat "node_modules\\.bin\\pm2 delete \"greetings-app-${envName}\" || exit 0"
 
